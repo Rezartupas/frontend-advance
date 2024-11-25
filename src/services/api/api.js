@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const USER_API_URL = 'https://673ccf6796b8dcd5f3fbc68e.mockapi.io/users';
-const MOVIE_API_URL = 'https://673ccf6796b8dcd5f3fbc68e.mockapi.io/movies';
+const USER_API_URL = import.meta.env.VITE_USER_API_URL;
+const MOVIE_API_URL = import.meta.env.VITE_MOVIE_API_URL;
 
 export const api = {
   // User operations
@@ -30,14 +30,15 @@ export const api = {
     return response.data;
   },
 
-  loginUser: async (credentials) => {
+loginUser: async (credentials) => {
     try {
       const users = await axios.get(USER_API_URL);
       const user = users.data.find(
         u => u.username === credentials.username && u.password === credentials.password
       );
       return user || null;
-    } catch (error) {
+    } catch (err) {
+      console.error('Login error:', err);
       throw new Error('Login failed');
     }
   },
